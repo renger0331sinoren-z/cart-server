@@ -351,16 +351,23 @@ def control_loop():
         t0 = time.time(); app.tick()
         time.sleep(max(0, DT - (time.time() - t0)))
 
-# ---------- Webサーバー ----------
+#---------- Webサーバー ----------
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *a): pass
+
     def _send(self, code, body, ctype="application/json"):
         b = body.encode() if isinstance(body, str) else body
-        self.send_response(code); self.send_header("Content-Type", ctype + "; charset=utf-8")
-        self.send_header("Content-Length", str(len(b))); self.end_headers(); self.wfile.write(b)
-   def _auth(self, pin):
-    pin = str(pin)
-    if not pin.isascii() or not pin.isdigit():
+        self.send_response(code)
+        self.send_header("Content-Type", ctype + "; charset=utf-8")
+        self.send_header("Content-Length", str(len(b)))
+        self.end_headers()
+        self.wfile.write(b)
+
+    def _auth(self, pin):
+        pin = str(pin)
+        if not pin.isascii() or not pin.isdigit():
+            return False
+        return secrets.compare_digest(pin, PIN)
         return False
     return secrets.compare_digest(pin, PIN)
     def do_GET(self):
