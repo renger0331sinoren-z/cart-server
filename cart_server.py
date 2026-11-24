@@ -358,7 +358,11 @@ class Handler(BaseHTTPRequestHandler):
         b = body.encode() if isinstance(body, str) else body
         self.send_response(code); self.send_header("Content-Type", ctype + "; charset=utf-8")
         self.send_header("Content-Length", str(len(b))); self.end_headers(); self.wfile.write(b)
-    def _auth(self, pin): return secrets.compare_digest(str(pin), PIN)
+   def _auth(self, pin):
+    pin = str(pin)
+    if not pin.isascii() or not pin.isdigit():
+        return False
+    return secrets.compare_digest(pin, PIN)
     def do_GET(self):
         u = urlparse(self.path)
         if u.path == "/": return self._send(200, PAGE, "text/html")
