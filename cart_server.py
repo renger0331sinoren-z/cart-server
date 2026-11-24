@@ -345,8 +345,7 @@ class CartApp:
                 self.gov.set_mode(Mode.MANUAL)
         return msg
 
-app = CartApp(); PIN = f"{secrets.randbelow(10000):04d}"
-
+app = CartApp(); PIN = "0332"
 def control_loop():
     while True:
         t0 = time.time(); app.tick()
