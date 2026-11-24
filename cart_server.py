@@ -624,6 +624,6 @@ if __name__ == "__main__":
 
     threading.Thread(target=control_loop, daemon=True).start()
 
-    print(f"サーバー起動: {host}:{port}", flush=True)
+    print(f"暗証番号: {PIN}", flush=True)
 
     ThreadingHTTPServer((host, port), Handler).serve_forever()
