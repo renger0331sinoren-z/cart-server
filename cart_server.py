@@ -351,7 +351,7 @@ def control_loop():
         t0 = time.time(); app.tick()
         time.sleep(max(0, DT - (time.time() - t0)))
 
-#---------- Webサーバー ----------
+# ---------- Webサーバー ----------
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *a): pass
 
