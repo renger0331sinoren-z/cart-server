@@ -363,18 +363,19 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b)
 
-    def _auth(self, pin):
+     def _auth(self, pin):
         pin = str(pin)
         if not pin.isascii() or not pin.isdigit():
             return False
         return secrets.compare_digest(pin, PIN)
-        return False
-    return secrets.compare_digest(pin, PIN)
+
     def do_GET(self):
         u = urlparse(self.path)
-        if u.path == "/": return self._send(200, PAGE, "text/html")
+        if u.path == "/":
+            return self._send(200, PAGE, "text/html")
         if u.path == "/api/state":
-            if not self._auth(parse_qs(u.query).get("pin", [""])[0]): return self._send(403, '{"error":"pin"}')
+            if not self._auth(parse_qs(u.query).get("pin", [""])[0]):
+                return self._send(403, '{"error":"pin"}')
             return self._send(200, json.dumps(app.state()))
         self._send(404, "{}")
     def do_POST(self):
